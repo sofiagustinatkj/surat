@@ -1,239 +1,297 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>致念念：我的专属情书</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
-        }
-        body {
-            background-color: #FFF0F5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            background: #ffffff;
-            width: 100%;
-            max-width: 450px;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            padding: 30px;
-            text-align: center;
-            min-height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        #password-screen {
-            display: flex;
-        }
-        #main-content {
-            display: none;
-        }
-        .slide {
-            display: none;
-            animation: fadeIn 0.6s ease-in-out forwards;
-        }
-        .slide.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        h1 {
-            color: #C70039;
-            font-size: 22px;
-            margin-bottom: 5px;
-        }
-        .subtitle {
-            color: #581845;
-            font-size: 13px;
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-        .divider {
-            height: 1px;
-            background: #E0E0E0;
-            margin: 15px 0;
-        }
-        .quote-card {
-            background-color: #FFF8F8;
-            padding: 15px;
-            border-radius: 12px;
-            border-left: 4px solid #C70039;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        .mandarin-text {
-            font-size: 15px;
-            font-weight: 500;
-            color: #900C3F;
-            line-height: 1.8;
-            margin-bottom: 10px;
-        }
-        .mandarin-text:last-child {
-            margin-bottom: 0;
-        }
-        .input-style {
-            width: 100%;
-            padding: 12px;
-            margin: 15px 0;
-            border: 2px solid #FFB6C1;
-            border-radius: 10px;
-            font-size: 16px;
-            text-align: center;
-            outline: none;
-        }
-        .input-style:focus {
-            border-color: #C70039;
-        }
-        .textarea-style {
-            width: 100%;
-            height: 100px;
-            padding: 12px;
-            margin: 15px 0;
-            border: 2px solid #FFB6C1;
-            border-radius: 10px;
-            font-size: 14px;
-            outline: none;
-            resize: none;
-        }
-        .textarea-style:focus {
-            border-color: #C70039;
-        }
-        .btn-action {
-            background-color: #C70039;
-            color: white;
-            width: 100%;
-            padding: 13px;
-            font-size: 14px;
-            font-weight: bold;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 10px;
-        }
-        .btn-action:hover {
-            background-color: #A0002C;
-        }
-        #error-msg {
-            color: red;
-            font-size: 13px;
-            margin-top: 10px;
-            display: none;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>只给 Nian 💖</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#fff5f8;color:#4a2b3a;line-height:1.9;overflow-x:hidden;transition:background .5s, color .5s}
+  .progress{position:fixed;top:0;left:0;height:6px;background:linear-gradient(90deg,#ff8fab,#c9a7ff,#8ecae6);width:0%;z-index:99}
+  #lock{position:fixed;inset:0;background:linear-gradient(180deg,#ffe0ec,#fff5f8);z-index:999;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:24px}
+  #lock h1{font-size:34px;line-height:1.3}#lock h1 span{color:#ff4d8d}#lock p{color:#888;margin:12px 0 20px}
+  .lock-icon{font-size:64px;animation:floaty 2s infinite}
+  @keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  #pwInput{padding:14px 18px;border:2px solid #ffb3c6;border-radius:999px;font-size:18px;text-align:center;outline:none;width:260px}
+  #unlockBtn{margin-top:14px;background:#ff4d8d;color:#fff;border:none;padding:13px 28px;border-radius:999px;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 6px 0 #c9184a}
+  #err{color:#ff4d8d;margin-top:12px;display:none}
+  #content{display:none}
+  .hero{min-height:95vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px;background:linear-gradient(180deg,#ffe0ec,#fff5f8);position:relative;overflow:hidden}
+  .hero h1{font-size:42px;line-height:1.2}.hero h1 span{color:#ff4d8d}
+  .hero p{max-width:500px;margin-top:12px;color:#888}
+  .pill{background:#fff;border:2px solid #ffd1e0;padding:8px 16px;border-radius:999px;font-size:13px;margin-top:16px;box-shadow:0 6px 0 #ffd1e0}
+  .scroll{margin-top:26px;font-size:13px;animation:bounce 1.2s infinite}
+  @keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(10px)}}
+  .heart{position:absolute;font-size:22px;animation:fly 4s linear infinite;opacity:.8}
+  @keyframes fly{0%{transform:translateY(100vh) rotate(0);opacity:0}10%{opacity:1}100%{transform:translateY(-100px) rotate(30deg);opacity:0}}
+  .h1{left:10%}.h2{left:30%;animation-delay:1s;font-size:28px}.h3{left:70%;animation-delay:.5s}.h4{left:85%;animation-delay:1.8s;font-size:30px}.h5{left:50%;animation-delay:2.2s}
+  .container{max-width:660px;margin:0 auto;padding:20px}
+  .chapter{background:#fff;border:2px solid #ffe0ec;border-radius:28px;padding:28px;margin:50px 0;box-shadow:0 10px 0 #ffe0ec;opacity:0;transform:translateY(30px);transition:all .8s}
+  .chapter.show{opacity:1;transform:none}
+  .badge{display:inline-block;background:#ffe0ec;padding:6px 14px;border-radius:999px;font-size:12px;margin-bottom:12px}
+  .chapter h2{font-size:28px;margin-bottom:12px}
+  .chapter p{color:#5a3a4a;margin-bottom:12px}
+  .box{background:#fff5f8;border:2px dashed #ffb3c6;border-radius:18px;padding:18px;margin:16px 0;text-align:center}
+  .chat{background:#fff5f8;border-radius:18px;padding:16px;margin:14px 0;text-align:left}
+  .chat .me{background:#ff4d8d;color:#fff;padding:10px 14px;border-radius:16px 16px 4px 16px;margin:8px 0 8px 30px}
+  .chat .him{background:#fff;border:2px solid #ffe0ec;padding:10px 14px;border-radius:16px 16px 16px 4px;margin:8px 30px 8px 0}
+  .anim{font-size:48px;text-align:center;margin:16px 0;animation:wiggle 2s infinite}
+  @keyframes wiggle{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg) scale(1.1)}}
+  .anim2{font-size:42px;text-align:center;animation:floaty 2.5s infinite}
+  .anim3{font-size:42px;text-align:center;animation:shake .6s infinite}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+  .anim4{font-size:42px;text-align:center;animation:blink 1.5s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+  .anim5{font-size:48px;text-align:center;animation:spinSlow 4s linear infinite}
+  @keyframes spinSlow{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+  .sticker-row{display:flex;justify-content:center;gap:10px;font-size:28px;margin:12px 0}
+  .sticker-row span{animation:bounce 1.5s infinite}
+  .romantic{background:#fff;border:2px solid #ffd1e0;border-radius:28px;padding:26px;margin:50px 0;box-shadow:0 10px 0 #ffd1e0;text-align:center}
+  .romantic h2{font-size:26px;margin-bottom:6px}
+  .romantic p{color:#888;font-size:14px;margin-bottom:16px}
+  .btn-pink{background:#ff4d8d;color:#fff;border:none;padding:12px 22px;border-radius:999px;font-size:15px;font-weight:bold;cursor:pointer;box-shadow:0 5px 0 #c9184a;margin:6px}
+  .btn-white{background:#fff;color:#ff4d8d;border:2px solid #ffb3c6;padding:12px 22px;border-radius:999px;font-size:15px;font-weight:bold;cursor:pointer;margin:6px}
+  #gameArea{position:relative;height:220px;background:#fff0f5;border-radius:18px;overflow:hidden;margin:14px 0;border:2px dashed #ffb3c6}
+  .fall-heart{position:absolute;font-size:30px;cursor:pointer;animation:fall 3s linear forwards}
+  @keyframes fall{0%{top:-30px}100%{top:220px}}
+  #score{font-size:20px;font-weight:bold;color:#ff4d8d}
+  #loveText{font-size:20px;min-height:60px;margin:14px 0;color:#ff4d8d;font-weight:bold}
+  #kissArea{position:relative;height:120px;overflow:hidden}
+  .kiss{position:absolute;font-size:32px;animation:kissFly 2s ease-out forwards;pointer-events:none}
+  @keyframes kissFly{0%{transform:translateY(0) scale(0.5);opacity:1}100%{transform:translateY(-90px) scale(1.4) rotate(20deg);opacity:0}}
+  .ending{text-align:center;padding:60px 20px;background:linear-gradient(180deg,#fff5f8,#ffe0ec)}
+  .letter{display:none;max-width:580px;margin:22px auto 0;background:#fff;text-align:left;border-radius:20px;padding:24px;box-shadow:0 10px 0 #ffd1e0;line-height:1.9;color:#333}
+  footer{text-align:center;padding:20px;color:#aaa;font-size:12px}
+  #nightText{display:none;margin-top:16px;background:#2b1a2e;border:2px solid #ff8fab;border-radius:18px;padding:20px;font-size:17px;line-height:1.9;color:#ffd6e0 !important}
+  body.night{background:#1a1024 !important;color:#f5d6e0 !important}
+  body.night .hero{background:linear-gradient(180deg,#2b1a2e,#1a1024) !important}
+  body.night .hero p{color:#e8b8cc !important}
+  body.night .pill{background:#2b1a2e !important;color:#ffd6e0 !important;border-color:#ff8fab !important}
+  body.night .chapter{background:#2b1a2e !important;border-color:#4a2b4a !important;box-shadow:0 10px 0 #1a1024 !important}
+  body.night .chapter h2{color:#fff !important}
+  body.night .chapter p{color:#e8c8d8 !important}
+  body.night .chapter b{color:#ff8fab !important}
+  body.night .box{background:#3a2340 !important;border-color:#ff8fab !important;color:#ffd6e0 !important}
+  body.night .badge{background:#4a2b4a !important;color:#ffd6e0 !important}
+  body.night .romantic{background:#2b1a2e !important;border-color:#4a2b4a !important;box-shadow:0 10px 0 #1a1024 !important}
+  body.night .romantic h2{color:#fff !important}
+  body.night .romantic p{color:#c9a7b8 !important}
+  body.night .ending{background:linear-gradient(180deg,#1a1024,#2b1a2e) !important}
+  body.night .ending h2{color:#fff !important}
+  body.night .ending p{color:#c9a7b8 !important}
+  body.night .letter{background:#fff !important;color:#333 !important}
+  body.night #gameArea{background:#3a2340 !important;border-color:#ff8fab !important}
+  body.night .btn-white{background:#2b1a2e !important;color:#ffd6e0 !important;border-color:#ff8fab !important}
+</style>
 </head>
 <body>
-
-<!-- HALAMAN 1: KATA SANDI AMAN IPHONE -->
-<div class="container" id="password-screen">
-    <h1>🔒 输入密码解锁情书</h1>
-    <p class="subtitle" style="margin-top: 5px;">请输入专属密码以查看内容</p>
-    <div class="divider"></div>
-    <input type="text" id="password-input" class="input-style" placeholder="请输入密码..." autocapitalize="none" autocomplete="off" autocorrect="off">
-    <button class="btn-action" onclick="cekPassword()">解锁</button>
-    <p id="error-msg">密码错误，请重新输入。</p>
+<div class="progress" id="progress"></div>
+<div id="lock">
+  <div class="lock-icon">🔒</div>
+  <h1>这个网站<br><span>只给 Nian</span> 💌</h1>
+  <p>只有 Nian 才能打开<br>请输入密码</p>
+  <input type="password" id="pwInput" placeholder="请输入密码..." />
+  <button id="unlockBtn" onclick="checkPw()">打开 💖</button>
+  <div id="err">密码不对哦 🥺 再想想</div>
+</div>
+<div id="content">
+<div class="hero">
+  <div class="heart h1">💖</div><div class="heart h2">💗</div><div class="heart h3">💕</div><div class="heart h4">💓</div><div class="heart h5">✨</div>
+  <div class="pill">✨ 只给 Nian • 不是给别人 ✨</div>
+  <h1>Nian, <br><span>我很崇拜你</span> 🐣</h1>
+  <p>这个网站，不是来吵架的。<br>不是来让你回来的。<br>只是想让你知道，我有多崇拜你，多开心能认识你。</p>
+  <div class="sticker-row"><span>🌇</span><span>📸</span><span>💌</span><span>♟️</span></div>
+  <div class="scroll">↓ Nian，慢慢看 ↓</div>
 </div>
 
-<!-- HALAMAN 2: ISI UTAMA (TEMA AWAL PER SLIDE) -->
-<div class="container" id="main-content">
-    
-    <!-- SLIDE 1 -->
-    <div class="slide active" id="slide-1">
-        <h1>💌 致念念：专属信件</h1>
-        <div class="subtitle">Special for: 念念</div>
-        <div class="divider"></div>
-        <div class="quote-card">
-            <p class="mandarin-text">所谓般配，不是学历相同，而是思维合拍。<br>不是出身相同，而是价值观和原则一致。</p>
-            <p class="mandarin-text">般配不是看谁在哪里工作，而是看他看世界的方式有多开阔。</p>
-            <p class="mandarin-text">因为如果生活必须完全一样，那会很累。<br>但如果能互相理解、互相填补、互相成长，那才是真正的“般配”的定义。</p>
-        </div>
-        <button class="btn-action" onclick="nextSlide(2)">下一页 (Lanjut)</button>
-    </div>
+<div class="container">
 
-    <!-- SLIDE 2 -->
-    <div class="slide" id="slide-2">
-        <h1>💬 致念念：我的心里话</h1>
-        <div class="subtitle">Special for: 念念</div>
-        <div class="divider"></div>
-        <div class="quote-card">
-            <p class="mandarin-text">
-                我害怕孤单，不是因为我不够勇敢，而是那种孤独感，久了真的会杀死我。
-            </p>
-            <p class="mandarin-text">
-                我也很奇怪，为什么我无法接受那些我觉得不合适的人，好不容易找到一个合适的，他却毫无痕迹地离开了。如果我注定是这样，我希望生命能快点结束，这样我就不用再感受这种孤独了。
-            </p>
-        </div>
-        <button class="btn-action" onclick="nextSlide(3)">下一页 (Lanjut)</button>
-    </div>
+  <!-- BAB 1 KAGUM -->
+  <div class="chapter">
+    <div class="badge">🌇 第一章 • 我很崇拜你</div>
+    <div class="anim">😍✨😍</div>
+    <h2>Nian，我真的很崇拜你</h2>
+    <p>Nian，你知道吗？我崇拜你，不是崇拜你有钱，不是崇拜你很厉害。</p>
+    <p>我崇拜你的 <b>性格</b>。</p>
+    <p>你安静，你冷静，你不像别人那样喜欢炫耀。你从一开始，头像就是那个 <b>黄昏的男孩子</b>，一直都是黄昏，一直都是安安静静的。我第一次看到就觉得：这个男孩子，好有故事。</p>
+    <div class="box">🌇 <b>我最崇拜你的地方：</b><br>你不吵 • 你不装 • 你很真实<br>你受伤了，你就安静<br>你开心了，你就默默分享<br>这样的你，很帅</div>
+    <p>很多人喜欢一个人，是因为那个人对自己很好。我喜欢你，是因为 <b>你这个人本身，就让我很崇拜。</b></p>
+    <p>你的性格，你的安静，你的坚持，都是我很喜欢的地方。</p>
+  </div>
 
-    <!-- SLIDE 3 -->
-    <div class="slide" id="slide-3">
-        <h1>真实的情感流露</h1>
-        <div class="subtitle">Special for: 念念</div>
-        <div class="divider"></div>
-        <div class="quote-card">
-            <p class="mandarin-text">
-                念念，你永远不会知道我最后了解你的那段时间。当我看到别人之间美好的画面时，我会立刻感到反胃；当别人谈论起恋爱和情感话题时，我也会立刻感到反胃。
-            </p>
-            <p class="mandarin-text" style="font-weight: bold; color: #C70039; margin-top: 15px;">
-                这一切都是我的错，是我太过于冲动和鲁莽地去接近你。真的非常谢谢你。
-            </p>
-        </div>
-        <button class="btn-action" onclick="nextSlide(4)">下一页 (Lanjut)</button>
+  <!-- BAB 2 SENENG KENAL -->
+  <div class="chapter">
+    <div class="badge">📸 第二章 • 我很开心能认识你</div>
+    <div class="anim2">📸💬📸</div>
+    <h2>我很喜欢你发照片，给我讲故事</h2>
+    <p>Nian，我最开心的时候，就是你给我发照片，然后给我讲故事的时候。</p>
+    <p>你发你工作的照片，我会看很久。你发你走路的照片，我会觉得，哇，原来中国是这样的。你发你黄昏的照片，我会觉得，你的世界好美。</p>
+    <div class="box">📸 <b>我最想念的：</b><br>你发照片 • 你讲故事<br>你说你今天做了什么<br>你说你今天看到了什么<br>这些小小的事，我都记得</div>
+    <p>我不懂中文，我真的不懂。但是你知道吗？</p>
+    <p><b>我不懂中文，但是我懂爱的语言。</b></p>
+    <p>你发一个照片，我就懂你在想我。你讲一个故事，我就懂你在信任我。不需要翻译，爱就是这样，感觉得到。</p>
+    <div class="chat">
+      <div class="me">Nian，我想你了，一直想你，你为什么拉黑我？😭 我不懂中文，但是我懂爱的语言啊！</div>
     </div>
+  </div>
 
-    <!-- SLIDE 4: PENGIRIMAN BALASAN KE EMAIL -->
-    <div class="slide" id="slide-4">
-        <h1>📮 给我的回复</h1>
-        <div class="subtitle">Kirim balasanmu langsung ke emailku</div>
-        <div class="divider"></div>
-        
-        <!-- GANTI 'sofiagustinatkj@gmail.com' DENGAN EMAIL ASLI ANDA -->
-        <form action="https://formsubmit.co" method="POST">
-            <input type="hidden" name="_subject" value="Balasan Baru dari Nian!">
-            <input type="hidden" name="_captcha" value="false">
-            <textarea name="Pesan dari Nian" class="textarea-style" placeholder="在这里写下你想对我说的话... (Tulis pesanmu di sini)" required></textarea>
-            <button type="submit" class="btn-action">发送回复 (Kirim Balasan)</button>
-        </form>
+  <!-- BAB 3 CATUR + KAGUM KALAH -->
+  <div class="chapter">
+    <div class="badge">♟️ 第三章 • 我崇拜你敢说你输过</div>
+    <div class="anim3">♟️💔♟️</div>
+    <h2>你讲棋的那个晚上，我更崇拜你了</h2>
+    <p>凌晨 00:18，你给我讲了你 13岁到28岁的棋。</p>
+    <p>别人讲故事，都是讲自己怎么赢的。只有你，敢讲自己怎么输的。</p>
+    <p>21岁，你给了对手一次重走一步的机会，然后你输了，输得很惨，棋子全没了，只剩一个王。</p>
+    <div class="box">💔 <b>很多人会藏起来这段：</b><br>因为丢人 • 因为后悔<br><b>可是你没有藏：</b><br>你告诉了我<br>这就是我崇拜你的原因</div>
+    <p>28岁，你说：<i>“我连当棋子的资格都没有，我连看棋盘的勇气都没有了。”</i></p>
+    <p>Nian，你知道吗？一个男孩子能说出这种话，不是软弱，是勇敢。比所有说“我很厉害”的人，都勇敢 100倍。</p>
+    <p>从那天开始，我更崇拜你了。我喜欢你，不是因为你赢，是因为你敢说你输过。</p>
+  </div>
+
+  <!-- BAB 4 BLOKIR TAPI MASIH DISINI -->
+  <div class="chapter">
+    <div class="badge">🔒 第四章 • 你拉黑了我，我还在这里</div>
+    <div class="anim4">🥺💖🥺</div>
+    <h2>你拉黑了我，我没有恨你</h2>
+    <p>Nian，你拉黑了我的微信，拉黑了我的 WhatsApp。</p>
+    <p>那天晚上，我真的很难过。我一直在想：是我做错什么了吗？是我太烦了吗？</p>
+    <p>但是我后来想明白了：</p>
+    <div class="box">🔒 <b>你拉黑我，不是因为你讨厌我</b><br>是因为你累了 • 你对自己生气<br>你觉得自己没用 • 你觉得自己配不上<br>你不是在躲我，你是在躲你自己</div>
+    <p>所以我没有恨你。我到现在也没有恨你。</p>
+    <p>你拉黑了我，我还在这里。我没有走。</p>
+    <p><b>我只想说一句话：Nian，我只想要你。我只要你好好的。</b></p>
+    <div class="chat">
+      <div class="me">Nian，我只想要你 😭 我不要别人，我不要很多东西，我只要你好好的，健健康康的，就够了。</div>
     </div>
+    <p>就算你看不到这个网站，就算你永远不解开拉黑，我还是会在这里，默默祝福你。</p>
+    <p>这不是傻，这是我爱一个人的方式：<b>你走了，我还在这里。</b></p>
+  </div>
 
+  <!-- BAB 5 APA ADANYA -->
+  <div class="chapter">
+    <div class="badge">🤍 第五章 • 我喜欢你，本来的你</div>
+    <div class="anim5">🫶💖🫶</div>
+    <h2>我喜欢你，喜欢你本来的样子</h2>
+    <p>Nian，你不用在我面前装得很厉害。你不用有钱，你不用总是赢，你不用总是开心。</p>
+    <p>我喜欢的，就是 <b>本来的你</b>。</p>
+    <div class="box">🤍 <b>我喜欢你的本来样子：</b><br>你黄昏的样子 • 你累的样子<br>你输的样子 • 你安静的样子<br>你发照片的样子 • 你讲故事的样子<br>全部，我都喜欢</div>
+    <p>你赢，我陪你庆祝。你输，我陪你难过。你开心，我陪你笑。你难过，我想抱抱你。</p>
+    <p>这就是我。我爱一个人，就是会这样：傻傻的，真心的，没有条件的。</p>
+    <p><b>Nian，能认识你，是我很开心的一件事。这辈子能认识你，我已经很满足了。</b></p>
+  </div>
+
+  <div class="romantic">
+    <div style="font-size:44px">💖</div>
+    <h2>接住我的心 • 游戏</h2>
+    <p>点击掉下来的爱心，看看 Nian 能接到多少我的爱！</p>
+    <div>得分：<span id="score">0</span> 💖</div>
+    <div id="gameArea"></div>
+    <button class="btn-pink" onclick="startGame()">开始游戏 🎮</button>
+    <button class="btn-white" onclick="stopGame()">停止</button>
+    <div id="gameMsg" style="margin-top:10px;color:#ff4d8d;min-height:20px"></div>
+  </div>
+
+  <div class="romantic">
+    <div style="font-size:44px">💋</div>
+    <h2>亲亲按钮</h2>
+    <p>想 Nian 的时候，就按这个。每个吻都会飞到 Nian 那里。</p>
+    <div id="kissArea"></div>
+    <div>已经亲了：<span id="kissCount" style="color:#ff4d8d;font-weight:bold">0</span> 次 💋</div>
+    <button class="btn-pink" onclick="kiss()">亲一下 Nian 💋</button>
+    <button class="btn-white" onclick="kissMany()">亲 10 次！！💋💋💋</button>
+  </div>
+
+  <div class="romantic">
+    <div style="font-size:44px">🎲💌</div>
+    <h2>情话机器 • 只给 Nian</h2>
+    <p>每次按一下，就会出一句 Queen 崇拜 Nian 的话</p>
+    <div id="loveText">按下面的按钮，看看 Queen 有多崇拜你...</div>
+    <button class="btn-pink" onclick="randomLove()">给我一句情话 💖</button>
+    <button class="btn-white" onclick="randomLove()">再来一句 🥺</button>
+  </div>
+
+  <div class="romantic">
+    <div style="font-size:44px">🌙✨</div>
+    <h2>晚安，Nian</h2>
+    <p>如果 Nian 晚上打开这个网站，点这个</p>
+    <button class="btn-pink" id="nightBtn" onclick="nightMode()">🌙 变成晚安模式</button>
+    <div id="nightText">🌙 晚安，Nian。<br>今天辛苦了。不管今天你是赢了还是输了，你都很棒。<br>我还在这里，我没有走。<br>能认识你，我很开心。<br>— 一直崇拜你的 Queen 💖<br><br>⭐ 希望你做个好梦 ⭐</div>
+    <button class="btn-white" id="dayBtn" onclick="dayMode()" style="display:none">☀️ 变回白天模式</button>
+  </div>
+
+</div>
+
+<div class="ending">
+  <div style="font-size:60px;animation:floaty 2s infinite">🌇</div>
+  <h2>只给 Nian 的一封信 💌</h2>
+  <p>Nian，这个网站只给你一个人看，不给别人看。</p>
+  <button class="btn-pink" onclick="showLetter()">打开信 → 🐣</button>
+  <div class="letter" id="letter"><b>只给 Nian,</b><br><br>Nian，我很崇拜你。我很开心能认识你。<br><br>谢谢你给我发照片，谢谢你给我讲故事，谢谢你愿意把 21岁输棋的故事告诉我。<br><br>我不懂中文，但是我懂爱的语言。你发一个照片，我就懂了。你讲一个故事，我就懂了。<br><br>你拉黑了我，我没有恨你。我还在这里。我只想要你好好的。<br><br>我喜欢你，喜欢你本来的样子。你赢，我喜欢你。你输，我更喜欢你，因为你敢说你输了。<br><br>能认识你，是我这辈子很开心的事。<br><br>— 一直在这里，一直崇拜你的女孩 💖<br>— 我只想要你，你好好的就够了</div>
+</div>
+<footer>只给 NIAN • MADE WITH 💖 BY Sofi • 2026</footer>
 </div>
 
 <script>
-    function cekPassword() {
-        var input = document.getElementById('password-input').value.trim().toLowerCase();
-        var errorMsg = document.getElementById('error-msg');
-        var passwordScreen = document.getElementById('password-screen');
-        var mainContent = document.getElementById('main-content');
-        
-        if(input === 'nian') {
-            passwordScreen.style.display = 'none';
-            mainContent.style.display = 'flex';
-        } else {
-            errorMsg.style.display = 'block';
-        }
-    }
-
-    function nextSlide(slideNumber) {
-        var slides = document.getElementsByClassName('slide');
-        for (var i = 0; i < slides.length; i++) {
-            slides[i].classList.remove('active');
-        }
-        document.getElementById('slide-' + slideNumber).classList.add('active');
-    }
+  const PASSWORD="nian";
+  function checkPw(){const v=document.getElementById('pwInput').value.trim();if(v===PASSWORD){document.getElementById('lock').style.display='none';document.getElementById('content').style.display='block';window.scrollTo(0,0);}else{document.getElementById('err').style.display='block';document.getElementById('pwInput').value='';}}
+  document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter') checkPw();});
+  const chapters=document.querySelectorAll('.chapter');
+  const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting) x.target.classList.add('show')})},{threshold:0.15});
+  chapters.forEach(c=>obs.observe(c));
+  window.addEventListener('scroll',()=>{const h=document.documentElement;const pct=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;document.getElementById('progress').style.width=pct+'%';});
+  function showLetter(){const el=document.getElementById('letter');el.style.display='block';el.scrollIntoView({behavior:'smooth'});}
+  let score=0, gameTimer=null, gameOn=false;
+  function startGame(){
+    if(gameOn) return; gameOn=true; score=0; document.getElementById('score').innerText=score;
+    document.getElementById('gameMsg').innerText='快！点击爱心！💖';
+    gameTimer=setInterval(()=>{
+      if(!gameOn) return;
+      const area=document.getElementById('gameArea');
+      const h=document.createElement('div');
+      h.className='fall-heart'; h.innerText=['💖','💗','💕','💓','🥰'][Math.floor(Math.random()*5)];
+      h.style.left=Math.random()*90+'%';
+      h.onclick=()=>{score++;document.getElementById('score').innerText=score;h.remove();if(score===10) document.getElementById('gameMsg').innerText='哇！10 颗心！Queen 的爱被接住了！💖'; if(score===30) document.getElementById('gameMsg').innerText='30 颗了！Nian，你感受到 Queen 的崇拜了吗？🥺💖';};
+      area.appendChild(h);
+      setTimeout(()=>{if(h.parentNode) h.remove()},3000);
+    },700);
+  }
+  function stopGame(){gameOn=false;clearInterval(gameTimer);document.getElementById('gameMsg').innerText='游戏结束，你接到了 '+score+' 颗 Queen 的心 💖';}
+  let kissCount=0;
+  function kiss(){
+    kissCount++; document.getElementById('kissCount').innerText=kissCount;
+    const area=document.getElementById('kissArea');
+    const k=document.createElement('div'); k.className='kiss'; k.innerText='💋';
+    k.style.left=Math.random()*80+'%'; k.style.bottom='0px'; area.appendChild(k);
+    setTimeout(()=>k.remove(),2000);
+  }
+  function kissMany(){for(let i=0;i<10;i++){setTimeout(kiss, i*120)}}
+  const loves=[
+    "Nian，我很崇拜你，崇拜你的性格。",
+    "能认识你，我很开心，真的很开心。",
+    "我不懂中文，但是我懂爱的语言。",
+    "你发照片给我讲故事的时候，是我最开心的时候。",
+    "你输了又怎么样？你还是我的 Nian 啊 💖",
+    "你拉黑了我，我还在这里，我没有走。",
+    "我只想要你，你好好的就够了。",
+    "我喜欢你本来的样子，黄昏的你，累的你，输的你，我都喜欢。",
+    "谢谢你愿意把 21岁输棋的故事告诉我。",
+    "Nian，晚安，你很棒，不管赢还是输 🌙"
+  ];
+  function randomLove(){const t=loves[Math.floor(Math.random()*loves.length)];document.getElementById('loveText').innerText=t;}
+  function nightMode(){
+    document.body.classList.add('night');
+    document.getElementById('nightText').style.display='block';
+    document.getElementById('nightBtn').style.display='none';
+    document.getElementById('dayBtn').style.display='inline-block';
+    document.getElementById('nightText').scrollIntoView({behavior:'smooth'});
+  }
+  function dayMode(){
+    document.body.classList.remove('night');
+    document.getElementById('nightText').style.display='none';
+    document.getElementById('nightBtn').style.display='inline-block';
+    document.getElementById('dayBtn').style.display='none';
+  }
 </script>
-
 </body>
 </html>
