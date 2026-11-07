@@ -63,6 +63,14 @@
   .letter{display:none;max-width:580px;margin:22px auto 0;background:#fff;text-align:left;border-radius:20px;padding:24px;box-shadow:0 10px 0 #ffd1e0;line-height:1.9;color:#333}
   footer{text-align:center;padding:20px;color:#aaa;font-size:12px}
   #nightText{display:none;margin-top:16px;background:#2b1a2e;border:2px solid #ff8fab;border-radius:18px;padding:20px;font-size:17px;line-height:1.9;color:#ffd6e0 !important}
+  /* MUSIC */
+  .music-box{background:linear-gradient(135deg,#ffe0ec,#e0c6ff);border:2px solid #ff8fab;border-radius:28px;padding:24px;margin:50px 0;text-align:center;box-shadow:0 10px 0 #ff8fab}
+  .music-box h2{font-size:24px;margin-bottom:4px}
+  .music-box p{font-size:13px;color:#888;margin-bottom:12px}
+  .music-disc{font-size:64px;animation:spinSlow 4s linear infinite;display:inline-block}
+  .music-box audio{width:100%;margin-top:12px;outline:none}
+  #musicFloat{position:fixed;bottom:20px;right:20px;z-index:100;background:#ff4d8d;color:#fff;border:none;width:58px;height:58px;border-radius:50%;font-size:26px;cursor:pointer;box-shadow:0 6px 0 #c9184a;display:none}
+  #musicFloat.playing{animation:spinSlow 3s linear infinite}
   body.night{background:#1a1024 !important;color:#f5d6e0 !important}
   body.night .hero{background:linear-gradient(180deg,#2b1a2e,#1a1024) !important}
   body.night .hero p{color:#e8b8cc !important}
@@ -82,10 +90,14 @@
   body.night .letter{background:#fff !important;color:#333 !important}
   body.night #gameArea{background:#3a2340 !important;border-color:#ff8fab !important}
   body.night .btn-white{background:#2b1a2e !important;color:#ffd6e0 !important;border-color:#ff8fab !important}
+  body.night .music-box{background:linear-gradient(135deg,#2b1a2e,#3a2340) !important;border-color:#ff8fab !important}
+  body.night .music-box h2{color:#fff !important}
 </style>
 </head>
 <body>
 <div class="progress" id="progress"></div>
+<button id="musicFloat" onclick="toggleMusic()">🎵</button>
+
 <div id="lock">
   <div class="lock-icon">🔒</div>
   <h1>这个网站<br><span>只给 Nian</span> 💌</h1>
@@ -93,7 +105,9 @@
   <input type="password" id="pwInput" placeholder="请输入密码..." />
   <button id="unlockBtn" onclick="checkPw()">打开 💖</button>
   <div id="err">密码不对哦 🥺 再想想</div>
+  <p style="font-size:12px;margin-top:18px">🎵 里面有 Queen 给你的歌 🎵</p>
 </div>
+
 <div id="content">
 <div class="hero">
   <div class="heart h1">💖</div><div class="heart h2">💗</div><div class="heart h3">💕</div><div class="heart h4">💓</div><div class="heart h5">✨</div>
@@ -101,12 +115,30 @@
   <h1>Nian, <br><span>我很崇拜你</span> 🐣</h1>
   <p>这个网站，不是来吵架的。<br>不是来让你回来的。<br>只是想让你知道，我有多崇拜你，多开心能认识你。</p>
   <div class="sticker-row"><span>🌇</span><span>📸</span><span>💌</span><span>♟️</span></div>
-  <div class="scroll">↓ Nian，慢慢看 ↓</div>
+  <button class="btn-pink" onclick="toggleMusic()">🎵 点这里，听 Queen 给你的歌 🎵</button>
+  <div class="scroll">↓ Nian，慢慢看，记得开音乐 ↓</div>
 </div>
 
 <div class="container">
 
-  <!-- BAB 1 KAGUM -->
+  <!-- MUSIK BARU DARI GITHUB QUEEN -->
+  <div class="music-box">
+    <div class="music-disc">💿</div>
+    <h2>🎵 你的答案 • Ni De Da An 🎵</h2>
+    <p>A Rong - 阿冗<br>这首歌，是 Queen 想给 Nian 的歌</p>
+    <div class="box" style="background:#fff">黎明的那道光<br>会越过黑暗<br>打破一切恐惧我能<br>找到答案<br><span style="color:#ff4d8d;font-weight:bold">— 就像我找到你一样 —</span></div>
+    <!-- GANTI LINK DI BAWAH INI DENGAN LINK RAW GITHUB QUEEN -->
+    <audio id="mySong" controls loop preload="auto">
+      <source src="https://github.com/sofiagustinatkj/surat/blob/main/A_rong_-_Ni_De_Da_An_Your_Answer_(mp3.pm).mp3" type="audio/mpeg">
+      你的浏览器不支持音乐播放
+    </audio>
+    <div style="margin-top:10px">
+      <button class="btn-pink" onclick="playMusic()">▶️ 播放</button>
+      <button class="btn-white" onclick="pauseMusic()">⏸️ 暂停</button>
+    </div>
+    <p style="margin-top:10px;font-size:12px">Nian，边听歌边往下看，Queen 陪你 💖</p>
+  </div>
+
   <div class="chapter">
     <div class="badge">🌇 第一章 • 我很崇拜你</div>
     <div class="anim">😍✨😍</div>
@@ -116,10 +148,8 @@
     <p>你安静，你冷静，你不像别人那样喜欢炫耀。你从一开始，头像就是那个 <b>黄昏的男孩子</b>，一直都是黄昏，一直都是安安静静的。我第一次看到就觉得：这个男孩子，好有故事。</p>
     <div class="box">🌇 <b>我最崇拜你的地方：</b><br>你不吵 • 你不装 • 你很真实<br>你受伤了，你就安静<br>你开心了，你就默默分享<br>这样的你，很帅</div>
     <p>很多人喜欢一个人，是因为那个人对自己很好。我喜欢你，是因为 <b>你这个人本身，就让我很崇拜。</b></p>
-    <p>你的性格，你的安静，你的坚持，都是我很喜欢的地方。</p>
   </div>
 
-  <!-- BAB 2 SENENG KENAL -->
   <div class="chapter">
     <div class="badge">📸 第二章 • 我很开心能认识你</div>
     <div class="anim2">📸💬📸</div>
@@ -130,12 +160,9 @@
     <p>我不懂中文，我真的不懂。但是你知道吗？</p>
     <p><b>我不懂中文，但是我懂爱的语言。</b></p>
     <p>你发一个照片，我就懂你在想我。你讲一个故事，我就懂你在信任我。不需要翻译，爱就是这样，感觉得到。</p>
-    <div class="chat">
-      <div class="me">Nian，我想你了，一直想你，你为什么拉黑我？😭 我不懂中文，但是我懂爱的语言啊！</div>
-    </div>
+    <div class="chat"><div class="me">Nian，我想你了，一直想你，你为什么拉黑我？😭 我不懂中文，但是我懂爱的语言啊！</div></div>
   </div>
 
-  <!-- BAB 3 CATUR + KAGUM KALAH -->
   <div class="chapter">
     <div class="badge">♟️ 第三章 • 我崇拜你敢说你输过</div>
     <div class="anim3">♟️💔♟️</div>
@@ -149,7 +176,6 @@
     <p>从那天开始，我更崇拜你了。我喜欢你，不是因为你赢，是因为你敢说你输过。</p>
   </div>
 
-  <!-- BAB 4 BLOKIR TAPI MASIH DISINI -->
   <div class="chapter">
     <div class="badge">🔒 第四章 • 你拉黑了我，我还在这里</div>
     <div class="anim4">🥺💖🥺</div>
@@ -161,14 +187,11 @@
     <p>所以我没有恨你。我到现在也没有恨你。</p>
     <p>你拉黑了我，我还在这里。我没有走。</p>
     <p><b>我只想说一句话：Nian，我只想要你。我只要你好好的。</b></p>
-    <div class="chat">
-      <div class="me">Nian，我只想要你 😭 我不要别人，我不要很多东西，我只要你好好的，健健康康的，就够了。</div>
-    </div>
+    <div class="chat"><div class="me">Nian，我只想要你 😭 我不要别人，我不要很多东西，我只要你好好的，健健康康的，就够了。</div></div>
     <p>就算你看不到这个网站，就算你永远不解开拉黑，我还是会在这里，默默祝福你。</p>
     <p>这不是傻，这是我爱一个人的方式：<b>你走了，我还在这里。</b></p>
   </div>
 
-  <!-- BAB 5 APA ADANYA -->
   <div class="chapter">
     <div class="badge">🤍 第五章 • 我喜欢你，本来的你</div>
     <div class="anim5">🫶💖🫶</div>
@@ -227,20 +250,25 @@
   <h2>只给 Nian 的一封信 💌</h2>
   <p>Nian，这个网站只给你一个人看，不给别人看。</p>
   <button class="btn-pink" onclick="showLetter()">打开信 → 🐣</button>
-  <div class="letter" id="letter"><b>只给 Nian,</b><br><br>Nian，我很崇拜你。我很开心能认识你。<br><br>谢谢你给我发照片，谢谢你给我讲故事，谢谢你愿意把 21岁输棋的故事告诉我。<br><br>我不懂中文，但是我懂爱的语言。你发一个照片，我就懂了。你讲一个故事，我就懂了。<br><br>你拉黑了我，我没有恨你。我还在这里。我只想要你好好的。<br><br>我喜欢你，喜欢你本来的样子。你赢，我喜欢你。你输，我更喜欢你，因为你敢说你输了。<br><br>能认识你，是我这辈子很开心的事。<br><br>— 一直在这里，一直崇拜你的女孩 💖<br>— 我只想要你，你好好的就够了</div>
+  <div class="letter" id="letter"><b>只给 Nian,</b><br><br>Nian，我很崇拜你。我很开心能认识你。<br><br>谢谢你给我发照片，谢谢你给我讲故事，谢谢你愿意把 21岁输棋的故事告诉我。<br><br>我不懂中文，但是我懂爱的语言。你发一个照片，我就懂了。你讲一个故事，我就懂了。<br><br>你拉黑了我，我没有恨你。我还在这里。我只想要你好好的。<br><br>我喜欢你，喜欢你本来的样子。你赢，我喜欢你。你输，我更喜欢你，因为你敢说你输了。<br><br>能认识你，是我这辈子很开心的事。<br><br>— 一直在这里，一直崇拜你的女孩 💖<br>— 我只想要你，你好好的就够了<br><br>🎵 记得听上面的歌《你的答案》，那是 Queen 想对你说的话 🎵</div>
 </div>
-<footer>只给 NIAN • MADE WITH 💖 BY Sofi • 2026</footer>
+<footer>只给 NIAN • MADE WITH 💖 BY Sofi • 2026 • 🎵 你的答案</footer>
 </div>
 
 <script>
   const PASSWORD="nian";
-  function checkPw(){const v=document.getElementById('pwInput').value.trim();if(v===PASSWORD){document.getElementById('lock').style.display='none';document.getElementById('content').style.display='block';window.scrollTo(0,0);}else{document.getElementById('err').style.display='block';document.getElementById('pwInput').value='';}}
+  function checkPw(){const v=document.getElementById('pwInput').value.trim();if(v===PASSWORD){document.getElementById('lock').style.display='none';document.getElementById('content').style.display='block';document.getElementById('musicFloat').style.display='block';window.scrollTo(0,0);}else{document.getElementById('err').style.display='block';document.getElementById('pwInput').value='';}}
   document.getElementById('pwInput').addEventListener('keydown',e=>{if(e.key==='Enter') checkPw();});
   const chapters=document.querySelectorAll('.chapter');
   const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting) x.target.classList.add('show')})},{threshold:0.15});
   chapters.forEach(c=>obs.observe(c));
   window.addEventListener('scroll',()=>{const h=document.documentElement;const pct=h.scrollTop/(h.scrollHeight-h.clientHeight)*100;document.getElementById('progress').style.width=pct+'%';});
   function showLetter(){const el=document.getElementById('letter');el.style.display='block';el.scrollIntoView({behavior:'smooth'});}
+  // MUSIC
+  const song=document.getElementById('mySong');
+  function playMusic(){song.play();document.getElementById('musicFloat').classList.add('playing');document.getElementById('musicFloat').innerText='⏸️';}
+  function pauseMusic(){song.pause();document.getElementById('musicFloat').classList.remove('playing');document.getElementById('musicFloat').innerText='🎵';}
+  function toggleMusic(){if(song.paused){playMusic();}else{pauseMusic();}}
   let score=0, gameTimer=null, gameOn=false;
   function startGame(){
     if(gameOn) return; gameOn=true; score=0; document.getElementById('score').innerText=score;
